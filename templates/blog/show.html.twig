@@ -1,4 +1,5 @@
 {% extends 'base.html.twig' %}
+{% form_theme commentForm 'bootstrap_4_layout.html.twig' %}
 
 {% block title %}Article{% endblock %}
 
@@ -56,6 +57,15 @@
         <p>{{comment.content}}</p>
     </div>
     {% endfor %}
+</section>
+
+<section>
+    <h2>Add Comment</h2>
+
+    {{form_start(commentForm)}}
+    {{form_widget(commentForm)}}
+    <button class="btn btn-success mb-5">Comment</button>
+    {{form_end(commentForm)}}
 </section>
 
 {% endblock %}
