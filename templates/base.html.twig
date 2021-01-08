@@ -7,6 +7,7 @@
             <link rel="stylesheet" href="https://bootswatch.com/4/litera/bootstrap.min.css">
             <link rel="preconnect" href="https://fonts.gstatic.com">
 <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@1,300&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('bundles/mercuryseriesflashy/css/flashy.css') }}">
         {% endblock %}
     </head>
     <body>
@@ -43,6 +44,14 @@
     <div class="container">
          {% block body %}{% endblock %}
     </div>
-        {% block javascripts %}{% endblock %}
+        {% block javascripts %}
+            <!-- Flashy depends on jQuery -->
+    <script src="//code.jquery.com/jquery.js"></script>
+    <!-- Load Flashy default JavaScript -->
+    <script src="{{ asset('bundles/mercuryseriesflashy/js/flashy.js') }}"></script>
+    
+        {% endblock %}
+        <!-- Include Flashy default partial -->
+    {{ include('@MercurySeriesFlashy/flashy.html.twig') }}
     </body>
 </html>

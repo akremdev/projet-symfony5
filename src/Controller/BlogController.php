@@ -12,15 +12,21 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Knp\Component\Pager\PaginatorInterface;
+use MercurySeries\FlashyBundle\FlashyNotifier;
 
 class BlogController extends AbstractController
 {
     /**
      * @Route("/", name="blog")
      */
-    public function index(ArticleRepository $articleRepository): Response
+    public function index(ArticleRepository $articleRepository, PaginatorInterface $paginator, Request $request): Response
     {
-        $articles = $articleRepository->findAll();
+
+        $articles = $paginator->paginate($articleRepository->findAll(),
+        $request->query->getInt('page', 1),
+        5);
+
       
         return $this->render('blog/index.html.twig', [
             'articles' => $articles
@@ -30,7 +36,7 @@ class BlogController extends AbstractController
      /**
      * @Route("article/new", name="article_new")
     */
-    public function new(Request $request)
+    public function new(Request $request, FlashyNotifier $flashyNotifier )
     {
         $article = new Article();
         $form = $this->createForm(ArticleType::class, $article);
@@ -42,7 +48,7 @@ class BlogController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($article);
             $entityManager->flush();
-
+            $flashyNotifier->success('Successfully created!');
             return $this->redirectToRoute("article_show", ['id' => $article->getId()]);
         }
 
@@ -54,7 +60,7 @@ class BlogController extends AbstractController
      /**
      * @Route("article/{id}/edit", name="article_edit")
     */
-    public function edit(Request $request, Article $article): Response
+    public function edit(Request $request, Article $article , FlashyNotifier $flashyNotifier): Response
     {
         $form = $this->createForm(ArticleType::class, $article);
         $form->handleRequest($request);
@@ -62,6 +68,7 @@ class BlogController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($article);
             $entityManager->flush();
+            $flashyNotifier->success('Successfully Edited!');
 
             return $this->redirectToRoute("article_show", ['id' => $article->getId()]);
         }
@@ -73,7 +80,7 @@ class BlogController extends AbstractController
     /**
      * @Route("article/{id}", name="article_show", methods={"GET", "POST"})
     */
-    public function show(Article $article, Request $request)
+    public function show(Article $article, Request $request , FlashyNotifier $flashyNotifier)
     {
         $comment = new Comment();
         $form = $this->createForm(CommentType::class, $comment);
@@ -84,6 +91,7 @@ class BlogController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($comment);
             $entityManager->flush();
+            $flashyNotifier->success('Comment Added Successfully!');
 
             return $this->redirectToRoute("article_show", ['id' => $article->getId()] );
         }
