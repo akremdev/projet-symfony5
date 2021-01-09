@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Article;
+use App\Entity\User;
 use App\Entity\Comment;
 use App\Form\ArticleType;
 use App\Form\CommentType;
@@ -14,9 +15,16 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Knp\Component\Pager\PaginatorInterface;
 use MercurySeries\FlashyBundle\FlashyNotifier;
+use Symfony\Component\Security\Core\Security;
 
 class BlogController extends AbstractController
 {
+    private $security;
+
+    public function __construct(Security $security)
+    {
+        $this->security = $security;
+    }
     /**
      * @Route("/", name="blog")
      */
@@ -45,6 +53,7 @@ class BlogController extends AbstractController
         if($form->isSubmitted() && $form->isValid()){
             $article->setCreatedAt(new DateTime());
             $article->setImage("https://picsum.photos/seed/picsum/350/150");
+            $article->setUser($this->security->getUser());
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($article);
             $entityManager->flush();

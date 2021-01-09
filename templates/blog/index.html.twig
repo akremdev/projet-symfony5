@@ -26,6 +26,9 @@
             <span class="badge badge-danger">
                 {{article.category.title}}
             </span>
+            {% if article.user %}
+                 By <span class="badge badge-success"> <strong> {{article.user.firstName}} {{article.user.lastName}} </strong></span> 
+            {% endif %}
         </div>
         <div class="content">
             <img src="{{article.image}}" alt="">
