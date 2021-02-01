@@ -16,4 +16,4 @@
 
 ![](screenshots/screen7.png)
 
-![](screenshots/screen7.png)
+![](screenshots/screen8.png)
