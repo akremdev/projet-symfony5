@@ -2,4 +2,4 @@
 
 # screenshots
 
-![](screenshots/screen1.jpeg)
+![](screenshots/screen1.png)
