@@ -47,6 +47,12 @@
 <a href="{{path('article_edit', {'id': article.id })}}" class="btn btn-success mt-5 mb-5">Modifier</a>
     {% endif %}
 {% endif %}
+
+{% if app.user %}
+    {% if app.user == article.user %}
+<a href="#" class="btn btn-danger mt-5 mb-5">Delete</a>
+    {% endif %}
+{% endif %}
 <hr>
 
 <h2 class="mt-5 mb-5">Comments</h2>
