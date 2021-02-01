@@ -1,4 +1,4 @@
-# projet-symfony5
+# projet-symfony5 - Blog System
 
 # screenshots
 
